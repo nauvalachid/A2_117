@@ -23,7 +23,7 @@ interface KategoriService {
 
     // Mengambil satu data kategori berdasarkan id_kategori
     @GET("kategori/read1kategori.php")
-    suspend fun getKategoriById(@Query("id_kategori") idKategori: String): Kategori
+    suspend fun getKategoriById(@Query("id_kategori") idKategori: Int): Kategori
 
     // Menambahkan data kategori baru
     @POST("kategori/createkategori.php")
@@ -32,11 +32,11 @@ interface KategoriService {
     // Mengupdate data kategori berdasarkan id_kategori
     @PUT("kategori/editkategori.php")
     suspend fun updateKategori(
-        @Query("id_kategori") idKategori: String,
+        @Query("id_kategori") idKategori: Int,
         @Body kategori: Kategori
     ): Response<Void>
 
     // Menghapus data kategori berdasarkan id_kategori
     @DELETE("kategori/deletekategori.php")
-    suspend fun deleteKategori(@Query("id_kategori") idKategori: String): Response<Void>
+    suspend fun deleteKategori(@Query("id_kategori") idKategori: Int): Response<Void>
 }

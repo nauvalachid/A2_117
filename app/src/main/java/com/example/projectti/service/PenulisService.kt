@@ -23,7 +23,7 @@ interface PenulisService {
 
     // Mengambil satu data penulis berdasarkan id_penulis
     @GET("penulis/read1penulis.php")
-    suspend fun getPenulisById(@Query("id_penulis") idPenulis: String): Penulis
+    suspend fun getPenulisById(@Query("id_penulis") idPenulis: Int): Penulis
 
     // Menambahkan data penulis baru
     @POST("penulis/createpenulis.php")
@@ -32,11 +32,11 @@ interface PenulisService {
     // Mengupdate data penulis berdasarkan id_penulis
     @PUT("penulis/editpenulis.php")
     suspend fun updatePenulis(
-        @Query("id_penulis") idPenulis: String,
+        @Query("id_penulis") idPenulis: Int,
         @Body penulis: Penulis
     ): Response<Void>
 
     // Menghapus data penulis berdasarkan id_penulis
     @DELETE("penulis/deletepenulis.php")
-    suspend fun deletePenulis(@Query("id_penulis") idPenulis: String): Response<Void>
+    suspend fun deletePenulis(@Query("id_penulis") idPenulis: Int): Response<Void>
 }

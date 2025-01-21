@@ -23,7 +23,7 @@ interface PenerbitService {
 
     // Mengambil satu data penerbit berdasarkan id_penerbit
     @GET("penerbit/read1penerbit.php")
-    suspend fun getPenerbitById(@Query("id_penerbit") idPenerbit: String): Penerbit
+    suspend fun getPenerbitById(@Query("id_penerbit") idPenerbit: Int): Penerbit
 
     // Menambahkan data penerbit baru
     @POST("penerbit/createpenerbit.php")
@@ -32,11 +32,11 @@ interface PenerbitService {
     // Mengupdate data penerbit berdasarkan id_penerbit
     @PUT("penerbit/editpenerbit.php")
     suspend fun updatePenerbit(
-        @Query("id_penerbit") idPenerbit: String,
+        @Query("id_penerbit") idPenerbit: Int,
         @Body penerbit: Penerbit
     ): Response<Void>
 
     // Menghapus data penerbit berdasarkan id_penerbit
     @DELETE("penerbit/deletepenerbit.php")
-    suspend fun deletePenerbit(@Query("id_penerbit") idPenerbit: String): Response<Void>
+    suspend fun deletePenerbit(@Query("id_penerbit") idPenerbit: Int): Response<Void>
 }
