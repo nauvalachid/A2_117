@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Penerbit(
     @SerialName("id_penerbit")
-    val idPenerbit: String,
+    val idPenerbit: Int,
     @SerialName("nama_penerbit")
     val namaPenerbit: String,
     @SerialName("alamat_penerbit")
