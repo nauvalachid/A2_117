@@ -20,8 +20,12 @@ data class PenerbitResponse(
 
 @Serializable
 data class Penerbit(
-    val id_penerbit: String,
-    val nama_penerbit: String,
-    val alamat_penerbit: String,
-    val telepon_penerbit: String
+    @SerialName("id_penerbit")
+    val idPenerbit: String,
+    @SerialName("nama_penerbit")
+    val namaPenerbit: String,
+    @SerialName("alamat_penerbit")
+    val alamatPenerbit: String,
+    @SerialName("telepon_penerbit")
+    val teleponPenerbit: String
 )
