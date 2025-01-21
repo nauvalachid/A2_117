@@ -6,13 +6,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Buku(
     @SerialName("id_buku")
-    val idBuku: Int,
+    val idBuku: Int? = null,
     @SerialName("nama_buku")
     val namaBuku: String,
     @SerialName("deskripsi_buku")
-    val deskripsiBuku: String,
+    val deskripsiBuku: String?,
     @SerialName("tanggal_terbit")
-    val tanggalTerbit: String,
+    val tanggalTerbit: String?,
     @SerialName("status_buku")
     val statusBuku: String,
     @SerialName("id_kategori")
