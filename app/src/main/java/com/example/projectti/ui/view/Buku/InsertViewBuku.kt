@@ -20,7 +20,11 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -32,6 +36,7 @@ import com.example.projectti.ui.viewmodel.Penerbit.HomePenerbitViewModel
 import com.example.projectti.ui.viewmodel.Penerbit.PenyediaPenerbitViewModel
 import com.example.projectti.ui.viewmodel.Penulis.HomePenulisViewModel
 import com.example.projectti.ui.viewmodel.Penulis.PenyediaPenulisViewModel
+import com.example.projectti.ui.viewmodel.Widget.DynamicSelectedTextField
 import kotlinx.coroutines.launch
 
 object DestinasiEntryBuku : DestinasiNavigasi {
@@ -42,34 +47,39 @@ object DestinasiEntryBuku : DestinasiNavigasi {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EntryBkScreen(
-    navigateBack:()-> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: InsertBukuViewModel = viewModel(factory = PenyediaBukuViewModel.Factory),
-    viewModelKategori: HomeKategoriViewModel = viewModel(factory = PenyediaKategoriViewModel.Factory),
-    viewModelPenerbit: HomePenerbitViewModel = viewModel(factory = PenyediaPenerbitViewModel.Factory),
-    viewModelPenulis: HomePenulisViewModel = viewModel(factory = PenyediaPenulisViewModel.Factory),
-){
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val coroutineScope = rememberCoroutineScope()
-    val kategoriUiState = viewModelKategori.ktgrUiState
-    val penerbitUiState = viewModelPenerbit.pnrbtUiState
-    val penulisUiState = viewModelPenulis.PnlsUiState
-    Scaffold (
+    var bukuUiState by remember { mutableStateOf(InsertBukuUiEvent()) }
+
+    Scaffold(
         modifier = modifier,
     ) { innerPadding ->
-        EntryBodyBuku(
-            insertBukuUiState = viewModel.bukuuiState,
-            onBukuValueChange = viewModel::updateInsertbkState,
-            onSaveClick = {
-                coroutineScope.launch {
-                    viewModel.insertBk()
-                    navigateBack()
-                }
-            },
+        Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .fillMaxWidth(),
-        )
+                .fillMaxWidth()
+        ) {
+            FormInputBuku(
+                insertBukuUiEvent = bukuUiState,
+                onValueChange = { bukuUiState = it },
+                enabled = true
+            )
+            Button(
+                onClick = {
+                    coroutineScope.launch {
+                        // Simpan logika
+                        navigateBack()
+                    }
+                },
+                shape = MaterialTheme.shapes.small,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Simpan")
+            }
+        }
     }
 }
 
@@ -104,18 +114,16 @@ fun EntryBodyBuku(
 fun FormInputBuku(
     insertBukuUiEvent: InsertBukuUiEvent,
     modifier: Modifier = Modifier,
-    onValueChange:(InsertBukuUiEvent)->Unit={},
-    enabled:Boolean = true,
-    viewModelKlienViewModel: HomeKlienViewModel,
-    viewModelLokasiViewModel: HomeLokasiViewModel
-){
-    Column (
+    onValueChange: (InsertBukuUiEvent) -> Unit = {},
+    enabled: Boolean = true
+) {
+    Column(
         modifier = Modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp)
-    ){
+    ) {
         OutlinedTextField(
             value = insertBukuUiEvent.namaBuku,
-            onValueChange = {onValueChange(insertBukuUiEvent.copy(namaBuku = it))},
+            onValueChange = { onValueChange(insertBukuUiEvent.copy(namaBuku = it)) },
             label = { Text("Nama Buku") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
@@ -123,7 +131,7 @@ fun FormInputBuku(
         )
         OutlinedTextField(
             value = insertBukuUiEvent.deskripsiBuku,
-            onValueChange = {onValueChange(insertBukuUiEvent.copy(deskripsiBuku = it))},
+            onValueChange = { onValueChange(insertBukuUiEvent.copy(deskripsiBuku = it)) },
             label = { Text("Deskripsi Kategori") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
@@ -131,11 +139,25 @@ fun FormInputBuku(
         )
         OutlinedTextField(
             value = insertBukuUiEvent.tanggalTerbit,
-            onValueChange = {onValueChange(insertBukuUiEvent.copy(tanggalTerbit = it))},
+            onValueChange = { onValueChange(insertBukuUiEvent.copy(tanggalTerbit = it)) },
             label = { Text("Tanggal Terbit") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
+        )
+        DynamicSelectedTextField(
+            selectedId = insertBukuUiEvent.idKategori,
+            options = listOf(
+                1 to "Fiksi",
+                2 to "Non-Fiksi",
+                3 to "Sejarah",
+                4 to "Teknologi"
+            ),
+            label = "Pilih Kategori",
+            onValueChangedEvent = { idKategori, _ ->
+                onValueChange(insertBukuUiEvent.copy(idKategori = idKategori))
+            },
+            modifier = Modifier.fillMaxWidth()
         )
         Text(
             text = "Status Buku",
@@ -164,10 +186,10 @@ fun FormInputBuku(
                 }
             }
         }
-        if (enabled){
+        if (enabled) {
             Text(
                 text = "Isi Semua Data!",
-                modifier= Modifier.padding(12.dp)
+                modifier = Modifier.padding(12.dp)
             )
         }
         Divider(
