@@ -27,14 +27,14 @@ class NetworkBukuRepository(
         }
     }
 
-    override suspend fun updateBuku(idBuku: String, buku: Buku) {
+    override suspend fun updateBuku(idBuku: Int, buku: Buku) {
         val response = bukuApiService.updateBuku(idBuku, buku)
         if (!response.isSuccessful) {
             throw IOException("Failed to update buku. HTTP Status code: ${response.code()}")
         }
     }
 
-    override suspend fun deleteBuku(idBuku: String) {
+    override suspend fun deleteBuku(idBuku: Int) {
         try {
             val response = bukuApiService.deleteBuku(idBuku)
             if (!response.isSuccessful) {
@@ -47,7 +47,7 @@ class NetworkBukuRepository(
         }
     }
 
-    override suspend fun getBukuById(idBuku: String): Buku {
+    override suspend fun getBukuById(idBuku: Int): Buku {
         return bukuApiService.getBukuById(idBuku)
     }
 }
