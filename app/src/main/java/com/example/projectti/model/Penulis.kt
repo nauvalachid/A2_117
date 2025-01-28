@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Penulis(
     @SerialName("id_penulis")
-    val idPenulis: Int? = null,
+    val idPenulis: Int ,
     @SerialName("nama_penulis")
     val namaPenulis: String,
     val biografi: String,
