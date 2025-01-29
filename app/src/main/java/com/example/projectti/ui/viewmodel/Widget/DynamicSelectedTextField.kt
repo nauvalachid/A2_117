@@ -23,53 +23,38 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DynamicSelectedTextField(
-    selectedId: Int?,
-    options: List<Pair<Int, String>>, // Pair<idKategori, label>
+    selectedValue: String,
+    options: List<String>,
     label: String,
-    onValueChangedEvent: (Int, String) -> Unit,
+    onValueChangedEvent: (String) -> Unit,
     modifier: Modifier = Modifier
-) {
+){
     var expanded by remember { mutableStateOf(false) }
-    val selectedLabel = options.find { it.first == selectedId }?.second.orEmpty()
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
+        onExpandedChange = {expanded = !expanded},
         modifier = modifier
     ) {
         OutlinedTextField(
             readOnly = true,
-            value = selectedLabel,
+            value = selectedValue,
             onValueChange = {},
             label = { Text(text = label) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surface,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant
-            ),
             shape = RoundedCornerShape(16.dp),
-            modifier = Modifier
-                .menuAnchor()
-                .fillMaxWidth()
+            modifier = Modifier.menuAnchor().fillMaxWidth()
         )
 
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier.background(MaterialTheme.colorScheme.surface)
-        ) {
-            options.forEach { option ->
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            options.forEach { option: String ->
                 DropdownMenuItem(
-                    text = { Text(text = option.second) },
+                    text = { Text(text = option) },
                     onClick = {
                         expanded = false
-                        onValueChangedEvent(option.first, option.second)
+                        onValueChangedEvent(option)
                     }
                 )
             }
