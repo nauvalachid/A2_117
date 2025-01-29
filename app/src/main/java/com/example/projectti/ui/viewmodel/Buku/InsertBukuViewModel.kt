@@ -37,9 +37,9 @@ data class InsertBukuUiEvent(
     val deskripsiBuku: String ="",
     val tanggalTerbit: String ="",
     val statusBuku: String ="",
-    val idKategori: Int = 0,
-    val idPenulis: Int = 0,
-    val idPenerbit: Int = 0
+    val idKategori: String = "",
+    val idPenulis: String = "",
+    val idPenerbit: String = "",
 )
 
 fun InsertBukuUiEvent.toBk(): Buku = Buku(
