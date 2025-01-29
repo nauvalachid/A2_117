@@ -34,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -71,6 +72,10 @@ fun HomeHalamanAwalScreen(
     viewModel: HomeHalamanAwalViewModel = viewModel(factory = PenyediaHalamanAwalViewModel.Factory)
 ) {
     val hlmnUiState = viewModel.hlmnUiState
+
+    LaunchedEffect(Unit) {
+        viewModel.getHlmn()
+    }
 
     Box(
         modifier = modifier
