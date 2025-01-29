@@ -16,9 +16,9 @@ data class Buku(
     @SerialName("status_buku")
     val statusBuku: String,
     @SerialName("id_kategori")
-    val idKategori: Int,
+    val idKategori: String,
     @SerialName("id_penulis")
-    val idPenulis: Int,
+    val idPenulis: String,
     @SerialName("id_penerbit")
-    val idPenerbit: Int
+    val idPenerbit: String
 )
