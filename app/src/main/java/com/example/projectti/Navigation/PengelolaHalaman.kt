@@ -10,8 +10,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.projectti.ui.view.Buku.DestinasiDetailBuku
 import com.example.projectti.ui.view.Buku.DestinasiEntryBuku
+import com.example.projectti.ui.view.Buku.DestinasiUpdateBuku
+import com.example.projectti.ui.view.Buku.DetailViewBuku
 import com.example.projectti.ui.view.Buku.EntryBkScreen
+import com.example.projectti.ui.view.Buku.UpdateViewBuku
 import com.example.projectti.ui.view.HalamanAwal.DestinasiHalamanUtama
 import com.example.projectti.ui.view.HalamanAwal.HomeHalamanAwalScreen
 import com.example.projectti.ui.view.Kategori.DestinasiDetailKategori
@@ -59,6 +63,10 @@ fun PengelolaHalaman(
                     navController.navigate(DestinasiHomePenulis.route)
                 },
                 onDetailClick = {
+                        idBuku ->
+                    if (idBuku != null) {
+                        navController.navigate("${DestinasiDetailBuku.route}/$idBuku")
+                    }
                 },
                 navigateToItemEntry = {
                     navController.navigate(DestinasiEntryBuku.route)
@@ -66,6 +74,52 @@ fun PengelolaHalaman(
                 modifier = Modifier
             )
         }
+
+        composable(
+            route = "${DestinasiDetailBuku.route}/{idBuku}",
+            arguments = listOf(navArgument("idBuku") { type = NavType.IntType })
+        ) { backStackEntry ->
+            // Ambil idBuku sebagai Int atau null jika tidak ditemukan
+            val idBuku = backStackEntry.arguments?.getInt("idBuku")
+            idBuku?.let {
+                DetailViewBuku(
+                    idBuku = it,
+                    navigateBack = {
+                        navController.navigate(DestinasiHalamanUtama.route) {
+                            popUpTo(DestinasiHalamanUtama.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onClick = {
+                        // Navigasi ke layar update dengan idBuku
+                        navController.navigate("${DestinasiUpdateBuku.route}/$it")
+                    }
+                )
+            }
+        }
+
+        composable(
+            route = "${DestinasiUpdateBuku.route}/{idBuku}",
+            arguments = listOf(navArgument("idBuku") { type = NavType.IntType })
+        ) { backStackEntry ->
+            // Ambil idBuku sebagai Int atau null jika tidak ditemukan
+            val idBuku = backStackEntry.arguments?.getInt("idBuku")
+            idBuku?.let {
+                UpdateViewBuku(
+                    idBuku = it,
+                    navigateBack = {
+                        navController.navigate(DestinasiHalamanUtama.route) {
+                            popUpTo(DestinasiHalamanUtama.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
+            }
+        }
+
+
 
         //BUku
         composable(DestinasiEntryBuku.route) {
@@ -238,6 +292,50 @@ fun PengelolaHalaman(
                     navController.popBackStack()
                 },
             )
+        }
+
+        composable(
+            route = "${DestinasiDetailPenerbit.route}/{idPenerbit}",
+            arguments = listOf(navArgument("idPenerbit") { type = NavType.IntType })
+        ) { backStackEntry ->
+            // Ambil idPenerbit sebagai Int atau null jika tidak ditemukan
+            val idPenerbit = backStackEntry.arguments?.getInt("idPenerbit")
+            idPenerbit?.let {
+                DetailViewPenerbit(
+                    idPenerbit = it,
+                    navigateBack = {
+                        navController.navigate(DestinasiHomePenerbit.route) {
+                            popUpTo(DestinasiHomePenerbit.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onClick = {
+                        // Navigasi ke layar update dengan idPenulis
+                        navController.navigate("${DestinasiUpdatePenerbit.route}/$it")
+                    }
+                )
+            }
+        }
+
+        composable(
+            route = "${DestinasiUpdatePenerbit.route}/{idPenerbit}",
+            arguments = listOf(navArgument("idPenerbit") { type = NavType.IntType })
+        ) { backStackEntry ->
+            // Ambil idKategori sebagai Int atau null jika tidak ditemukan
+            val idPenerbit = backStackEntry.arguments?.getInt("idPenerbit")
+            idPenerbit?.let {
+                UpdateViewPenerbit(
+                    idPenerbit = it,
+                    navigateBack = {
+                        navController.navigate(DestinasiHomePenerbit.route) {
+                            popUpTo(DestinasiHomePenerbit.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
+            }
         }
     }
 }
